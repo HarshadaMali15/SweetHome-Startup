@@ -8,12 +8,10 @@ export function generateStaticParams() {
   }));
 }
 
-// Next.js App Router page: accept plain { params: { id: string } }
-export default function Page({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = params; // available if needed later
+// Next.js App Router page
+// Use a broad props type here to avoid conflicting with Next's internal PageProps constraint
+export default function Page(props: any) {
+  const { params } = props;
+  const id = params?.id as string | undefined; // available if needed later
   return <ProductForm />;
 }
