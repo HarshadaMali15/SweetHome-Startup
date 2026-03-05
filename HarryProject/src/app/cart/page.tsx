@@ -93,9 +93,10 @@ export default function CartPage() {
       {cart?.items && cart.items.length ? (
         <div className="space-y-4">
           {cart.items
-            // Filter out any items that don't have a valid product
-            .filter((item) => item && item.product)
             .map((item) => {
+              // Runtime guard + type narrowing for TypeScript
+              if (!item || !item.product) return null;
+
               const imagePath = item.product.images?.[0];
 
               return (
@@ -130,6 +131,7 @@ export default function CartPage() {
                       size="icon"
                       variant="outline"
                       onClick={() =>
+                        item.product &&
                         updateQuantity(item.product._id, item.quantity - 1)
                       }
                       disabled={item.quantity <= 1}
@@ -141,6 +143,7 @@ export default function CartPage() {
                       size="icon"
                       variant="outline"
                       onClick={() =>
+                        item.product &&
                         updateQuantity(item.product._id, item.quantity + 1)
                       }
                     >
