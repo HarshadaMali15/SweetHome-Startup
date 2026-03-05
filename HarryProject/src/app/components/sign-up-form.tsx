@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils"
 import Image from "next/image"
 import { toast } from "sonner"
 import Navbar from "./Homepage/Navbar"
-
+import API from "@/lib/api"
 interface ValidationState {
   isValid: boolean
   message: string

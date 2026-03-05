@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
-
+import API from "@/lib/api";
 export default function RegistrationForm({ onClose, onSwitch }: { onClose: () => void, onSwitch: () => void }) {
   const [isOpen, setIsOpen] = useState(true); 
   const [formData, setFormData] = useState({
@@ -54,22 +54,15 @@ export default function RegistrationForm({ onClose, onSwitch }: { onClose: () =>
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/seller/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
+      // fetch ऐवजी axios instance वापर
+      const res = await API.post("/api/seller/register", formData);
 
       setSuccess("Registration successful! Please log in.");
       setTimeout(() => onSwitch(), 2000);
     } catch (error: any) {
-      setError(error.message);
+      setError(error.response?.data?.message || "Something went wrong");
     }
   };
-
   const handleClose = () => {
     setIsOpen(false);
     onClose();

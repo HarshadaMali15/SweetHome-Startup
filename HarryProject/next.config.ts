@@ -7,7 +7,8 @@ const nextConfig: NextConfig = {
         protocol: "http",
         hostname: "localhost",
         port: "5000",
-        pathname: "/uploads/**",
+        // Allow all image paths from the backend (e.g. /tmp/uploads/..., /uploads/...)
+        pathname: "/**",
       },
     ],
   },

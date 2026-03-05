@@ -4,7 +4,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
+import API from "@/lib/api"; // axios instance
 
 interface Product {
   _id: string;
@@ -27,19 +28,16 @@ export default function CheckoutContent() {
   const [loading, setLoading] = useState(true);
   const [address, setAddress] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("COD");
-  const [message, setMessage] = useState("");
   const [processingPayment, setProcessingPayment] = useState(false);
 
   useEffect(() => {
     async function fetchProduct() {
       if (!productId) return;
       try {
-        const res = await fetch(`http://localhost:5000/api/products/${productId}`);
-        if (!res.ok) throw new Error("Failed to fetch product details");
-        const data = await res.json();
+        const { data } = await API.get(`/api/products/${productId}`);
         setProduct(data.product);
       } catch (err: any) {
-        setMessage(err.message || "Something went wrong");
+        toast.error(err.message || "Something went wrong");
       } finally {
         setLoading(false);
       }
@@ -56,38 +54,19 @@ export default function CheckoutContent() {
   const finalAmount = calculateFinalAmount();
 
   const handleDummyRazorpayPayment = () => {
-    const options = {
-      key: "dummy_key",
-      amount: finalAmount * 100,
-      currency: "INR",
-      name: "Dummy Razorpay",
-      description: "Test Transaction",
-      prefill: {
-        name: "Test User",
-        email: "test@example.com",
-        contact: "9999999999",
-      },
-      notes: { address },
-      theme: { color: "#F37254" },
-      handler: function () {
-        toast.success("Payment successful via Razorpay (dummy)!");
-        createOrder();
-      },
-    };
-
     setProcessingPayment(true);
     setTimeout(() => {
-      options.handler();
+      toast.success("Payment successful via Razorpay (dummy)!");
+      createOrder();
       setProcessingPayment(false);
     }, 2000);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMessage("");
 
     if (!address.trim()) {
-      setMessage("Shipping address is required");
+      toast.error("Shipping address is required");
       return;
     }
 
@@ -100,25 +79,21 @@ export default function CheckoutContent() {
 
   const createOrder = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/orders/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
+      const { data } = await API.post(
+        "/api/orders/create",
+        {
           items: [{ productId, quantity }],
           paymentMethod,
           address,
           finalAmount,
-        }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        router.push(`/order-summary?orderId=${data.order._id}`);
-      } else {
-        setMessage(data.message || "Failed to create order");
-      }
+        },
+        { withCredentials: true }
+      );
+
+      toast.success("Order placed successfully!");
+      router.push(`/order-summary?orderId=${data.order._id}`);
     } catch (error: any) {
-      setMessage(error.message || "Server error");
+      toast.error(error.response?.data?.message || "Server error");
     }
   };
 
@@ -132,8 +107,7 @@ export default function CheckoutContent() {
     <div className="container mx-auto px-4 py-8 max-w-2xl">
       <ToastContainer />
       <h1 className="text-2xl font-bold mb-4">Checkout</h1>
-      {message && <div className="mb-4 text-red-600">{message}</div>}
-      
+
       <div className="border p-4 rounded mb-6">
         <h2 className="text-xl font-semibold">{product.name}</h2>
         <p>Quantity: {quantity}</p>
@@ -155,6 +129,21 @@ export default function CheckoutContent() {
             className="w-full border p-2 rounded"
             placeholder="Enter your shipping address"
           />
+        </div>
+
+        {/* Payment Method Selection */}
+        <div>
+          <label className="block font-medium mb-1">Payment Method</label>
+          <select
+            value={paymentMethod}
+            onChange={(e) => setPaymentMethod(e.target.value)}
+            className="w-full border p-2 rounded"
+          >
+            <option value="COD">Cash on Delivery</option>
+            <option value="Online Payment (Dummy)">
+              Online Payment (Dummy)
+            </option>
+          </select>
         </div>
 
         <Button type="submit" className="w-full" disabled={processingPayment}>

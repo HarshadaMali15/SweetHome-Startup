@@ -3,12 +3,19 @@
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { useState } from "react";
-import { useRouter } from "next/navigation"; 
-import { useSellerAuth } from "@/context/authContextSeller"; // Add this line
+import { useRouter } from "next/navigation";
+import { useSellerAuth } from "@/context/authContextSeller";
+import API from "@/lib/api"; // 👈 axios instance वापर
 
-export default function LoginForm({ onClose, onSwitch }: { onClose: () => void, onSwitch: () => void }) {
+export default function LoginForm({
+  onClose,
+  onSwitch,
+}: {
+  onClose: () => void;
+  onSwitch: () => void;
+}) {
   const router = useRouter();
-  const { setSeller } = useSellerAuth(); // Ensure this is used
+  const { setSeller } = useSellerAuth();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -23,26 +30,20 @@ export default function LoginForm({ onClose, onSwitch }: { onClose: () => void, 
     setSuccess("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/seller/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-        credentials: "include",
-      });
+      // ✅ axios instance वापरून API call
+      const res = await API.post("/api/seller/login", formData);
+      const data = res.data;
 
-      const data = await res.json();
-      console.log("Login Response:", data); // Debugging
+      console.log("Login Response:", data);
 
-      if (!res.ok) throw new Error(data.message);
-
-      setSeller(data.seller); // **Fix: Store logged-in user data**
+      setSeller(data.seller);
       setSuccess("Login successful!");
 
       setTimeout(() => {
-        router.push("/categories"); 
-      }, 1000); 
+        router.push("/categories");
+      }, 1000);
     } catch (error: any) {
-      setError(error.message);
+      setError(error.response?.data?.message || error.message || "Login failed");
     }
   };
 
@@ -52,7 +53,6 @@ export default function LoginForm({ onClose, onSwitch }: { onClose: () => void, 
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
-
     >
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
@@ -60,7 +60,10 @@ export default function LoginForm({ onClose, onSwitch }: { onClose: () => void, 
         exit={{ scale: 0.9, opacity: 0 }}
         className="bg-white rounded-lg p-8 shadow-xl max-w-md w-full relative"
       >
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+        >
           <X size={24} />
         </button>
 
@@ -70,7 +73,12 @@ export default function LoginForm({ onClose, onSwitch }: { onClose: () => void, 
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Email
+            </label>
             <input
               type="email"
               id="email"
@@ -81,7 +89,12 @@ export default function LoginForm({ onClose, onSwitch }: { onClose: () => void, 
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Password
+            </label>
             <input
               type="password"
               id="password"
@@ -101,12 +114,22 @@ export default function LoginForm({ onClose, onSwitch }: { onClose: () => void, 
             Login
           </motion.button>
 
-          <p className="text-center text-gray-600">
-            Don't have an account?{" "}
-            <button onClick={onSwitch} className="text-yellow-600 hover:text-yellow-700 transition-colors">
-              Sign Up
-            </button>
-          </p>
+          <div className="space-y-1">
+            <p className="text-center text-gray-600">
+              Don't have an account?{" "}
+              <button
+                onClick={onSwitch}
+                className="text-yellow-600 hover:text-yellow-700 transition-colors"
+              >
+                Sign Up
+              </button>
+            </p>
+            {/* Demo seller credentials */}
+            <p className="text-center text-xs text-gray-500">
+              Demo Seller: <span className="font-semibold">archanamali991@gmail.com</span> /{" "}
+              <span className="font-semibold">Pass@1234</span>
+            </p>
+          </div>
         </form>
       </motion.div>
     </motion.div>

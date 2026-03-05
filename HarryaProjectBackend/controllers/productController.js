@@ -1,5 +1,6 @@
 //controllers/productController.js
 import Product from "../models/Product.js";
+import path from "path";
 
 export const addProduct = async (req, res) => {
   try {
@@ -17,8 +18,12 @@ export const addProduct = async (req, res) => {
       return res.status(400).json({ message: "Required fields are missing" });
     }
 
-    // Ensure images are correctly saved
-    const images = req.files.map(file => "/" + file.path.replace(/\\/g, "/"));
+    // Ensure images are correctly saved as URLs under /uploads
+    const images = (req.files || []).map((file) => {
+      // Use the generated filename and always serve from /uploads
+      const filename = file.filename || path.basename(file.path);
+      return `/uploads/${filename}`;
+    });
 
     // Get seller id from authenticated request (ensure middleware sets req.seller)
     const sellerId = req.seller ? req.seller._id : null;
@@ -182,7 +187,10 @@ export const updateProduct = async (req, res) => {
 
     // If new images are uploaded, update the image paths
     if (req.files && req.files.length > 0) {
-      product.images = req.files.map(file => "/" + file.path.replace(/\\/g, "/"));
+      product.images = req.files.map((file) => {
+        const filename = file.filename || path.basename(file.path);
+        return `/uploads/${filename}`;
+      });
     }
 
     await product.save();

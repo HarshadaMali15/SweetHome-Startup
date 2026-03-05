@@ -56,7 +56,9 @@ export default function ProductDetailPage() {
 
         // Set the first image as the selected image by default
         if (data.product.images && data.product.images.length > 0) {
-          setSelectedImage(`http://localhost:5000${data.product.images[0]}`);
+          const firstImage = data.product.images[0];
+          const normalizedPath = firstImage.replace(/^\/+/, "/");
+          setSelectedImage(`http://localhost:5000${normalizedPath}`);
         }
       } catch (err: any) {
         setError(err.message || "Something went wrong");
@@ -155,7 +157,8 @@ export default function ProductDetailPage() {
           {/* Thumbnails */}
           <div className="flex space-x-2 overflow-x-auto pb-2">
             {product.images.map((img, index) => {
-              const fullImageUrl = `http://localhost:5000${img}`;
+              const normalizedPath = img.replace(/^\/+/, "/");
+              const fullImageUrl = `http://localhost:5000${normalizedPath}`;
               return (
                 <div
                   key={index}

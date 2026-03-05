@@ -24,6 +24,12 @@ export default function ProductCard({
 }: ProductCardProps) {
   const discountPercentage = discountPrice ? Math.round((( price - discountPrice ) / price) * 100) : 0;
 
+  const normalizeImagePath = (imgPath: string | undefined) => {
+    if (!imgPath) return "";
+    // Remove duplicate leading slashes so //tmp/... becomes /tmp/...
+    return imgPath.replace(/^\/+/, "/");
+  };
+
   return (
 
     <Link
@@ -35,7 +41,7 @@ export default function ProductCard({
         <Image
           src={
             images[0]
-              ? `http://localhost:5000${images[0]}`
+              ? `http://localhost:5000${normalizeImagePath(images[0])}`
               : "/placeholder.svg"
           }
           alt={name}

@@ -7,6 +7,7 @@ import type React from "react"
 import { useRouter } from "next/navigation";
 import Navbar from "./Homepage/Navbar"
 import { useAuth } from "@/context/auth-context"
+import API from "@/lib/api";
 
 
 
@@ -55,30 +56,20 @@ export default function LoginForm() {
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-  
-    setTouched({ email: true, password: true });
-  
-    try {
-        const response = await fetch(`http://localhost:5000/api/auth/login`, {
-        method: "POST",
-        credentials: 'include',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-  
-      const data = await response.json();
-  
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed");
-      }
-  
-      
-      login(data.user);
-    } catch (error) {
-      alert((error as Error).message);
-    }
-  };
+  e.preventDefault();
+
+  setTouched({ email: true, password: true });
+
+  try {
+    const response = await API.post("/api/auth/login", formData); 
+    const data = response.data;
+
+    login(data.user);
+  } catch (error: any) {
+    alert(error.response?.data?.message || error.message || "Login failed");
+  }
+};
+
   
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -232,6 +223,12 @@ export default function LoginForm() {
                 <a href="/sign-up" className="text-yellow-600 hover:text-yellow-700 transition-colors">
                   Sign up
                 </a>
+              </p>
+
+              {/* Demo user credentials */}
+              <p className="text-center text-xs text-gray-500 mt-2">
+                Demo User: <span className="font-semibold">harshadamali2003@gmail.com</span> /{" "}
+                <span className="font-semibold">Pass@1234</span>
               </p>
             </motion.div>
           </div>
