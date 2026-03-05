@@ -8,11 +8,8 @@ export function generateStaticParams() {
   }));
 }
 
-export default function SellProductPage({
-  // params is required for dynamic route signature, even if unused here
-  params,
-}: {
-  params: { id: string };
-}) {
+type SellPageProps = { params: { id: string } };
+
+export default function SellProductPage({ params }: SellPageProps) {
   return <ProductForm />;
 }
