@@ -8,8 +8,12 @@ export function generateStaticParams() {
   }));
 }
 
-type SellPageProps = { params: { id: string } };
-
-export default function SellProductPage({ params }: SellPageProps) {
+// Next.js App Router page: accept plain { params: { id: string } }
+export default function Page({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { id } = params; // available if needed later
   return <ProductForm />;
 }
