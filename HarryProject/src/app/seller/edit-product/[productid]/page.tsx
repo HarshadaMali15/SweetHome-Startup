@@ -1,8 +1,8 @@
 import EditProductClient from "./EditProductClient";
 
-// Minimal static params for next export; edit pages are populated client-side
+// Static export requires at least one param
 export function generateStaticParams() {
-  return [];
+  return [{ productid: "sample" }];
 }
 
 export default function Page({
