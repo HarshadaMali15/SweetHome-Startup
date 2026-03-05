@@ -1,18 +1,17 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { categories, subcategories } from "../../../components/sell-your-product/categories";
-import { Button } from "@/components/ui/button";
+import EditProductClient from "./EditProductClient";
 
 // Minimal static params for next export; edit pages are populated client-side
 export function generateStaticParams() {
   return [];
 }
 
-export default function EditProductForm() {
-  const router = useRouter();
-  const params = useParams();
-  const productid = params.productid as string; // ✅ Ensure productid is a string
+export default function Page({
+  params,
+}: {
+  params: { productid: string };
+}) {
+  return <EditProductClient productid={params.productid} />;
+}
 
   const [product, setProduct] = useState({
     name: "",
