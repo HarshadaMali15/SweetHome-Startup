@@ -1,14 +1,12 @@
 import EditProductClient from "./EditProductClient";
 
-// Static export requires at least one param
+// Required for static export
 export function generateStaticParams() {
   return [{ productid: "sample" }];
 }
 
-export default function Page({
-  params,
-}: {
-  params: { productid: string };
-}) {
-  return <EditProductClient productid={params.productid} />;
+export default function Page(props: any) {
+  const productid = props?.params?.productid;
+
+  return <EditProductClient productid={productid} />;
 }
