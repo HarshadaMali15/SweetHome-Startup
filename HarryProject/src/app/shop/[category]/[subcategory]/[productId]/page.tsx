@@ -47,7 +47,7 @@ export default function ProductDetailPage() {
   useEffect(() => {
     async function fetchProduct() {
       try {
-        const res = await fetch(`http://localhost:5000/api/products/${productId}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${productId}`);
         if (!res.ok) {
           throw new Error("Failed to fetch product details");
         }
@@ -58,7 +58,7 @@ export default function ProductDetailPage() {
         if (data.product.images && data.product.images.length > 0) {
           const firstImage = data.product.images[0];
           const normalizedPath = firstImage.replace(/^\/+/, "/");
-          setSelectedImage(`http://localhost:5000${normalizedPath}`);
+          setSelectedImage(`${process.env.NEXT_PUBLIC_API_URL}${normalizedPath}`);
         }
       } catch (err: any) {
         setError(err.message || "Something went wrong");
@@ -89,7 +89,7 @@ export default function ProductDetailPage() {
   // Add to Cart API call
   const handleAddToCart = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/cart/add", {
+      const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/cart/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // send cookies
@@ -158,7 +158,7 @@ export default function ProductDetailPage() {
           <div className="flex space-x-2 overflow-x-auto pb-2">
             {product.images.map((img, index) => {
               const normalizedPath = img.replace(/^\/+/, "/");
-              const fullImageUrl = `http://localhost:5000${normalizedPath}`;
+              const fullImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${normalizedPath}`;
               return (
                 <div
                   key={index}

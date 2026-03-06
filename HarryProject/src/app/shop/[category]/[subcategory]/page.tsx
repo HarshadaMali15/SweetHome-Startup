@@ -23,7 +23,7 @@ export default function SubcategoryPage() {
     }
 
     async function fetchProducts() {
-      const apiURL = `http://localhost:5000/api/products?category=${encodeURIComponent(category ?? "")}&subcategory=${encodeURIComponent(subcategory ?? "")}`;
+      const apiURL = `${process.env.NEXT_PUBLIC_API_URL}/api/products?category=${encodeURIComponent(category ?? "")}&subcategory=${encodeURIComponent(subcategory ?? "")}`;
 
       console.log("🔍 API Call URL:", apiURL);
 

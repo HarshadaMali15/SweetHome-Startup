@@ -30,7 +30,7 @@ export default function EditProductForm({ productId }: { productId: string }) {
   useEffect(() => {
     async function fetchProduct() {
       try {
-        const response = await fetch(`http://localhost:5000/api/products/${productId}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${productId}`, {
           method: "GET",
           credentials: "include",
         });
@@ -92,7 +92,7 @@ export default function EditProductForm({ productId }: { productId: string }) {
     });
 
     try {
-      const response = await fetch(`http://localhost:5000/api/products/update/${productId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/update/${productId}`, {
         method: "PUT",
         body: formData,
         credentials: "include",

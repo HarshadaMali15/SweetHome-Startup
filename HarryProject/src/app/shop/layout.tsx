@@ -10,7 +10,7 @@ export default function ShopLayout({ children }: { children: React.ReactNode }) 
 
   useEffect(() => {
     const checkAuth = async () => {
-      const res = await fetch("http://localhost:5000/api/auth/check-auth", {
+      const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/auth/check-auth", {
         credentials: "include",
       });
 

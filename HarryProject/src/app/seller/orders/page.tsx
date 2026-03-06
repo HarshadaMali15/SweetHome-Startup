@@ -42,7 +42,7 @@ export default function SellerOrdersPage() {
 
   const fetchSellerOrders = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/seller/seller", {
+      const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/seller/seller", {
         method: "GET",
         credentials: "include",
       });
@@ -133,7 +133,7 @@ export default function SellerOrdersPage() {
 
               const hasImage = Array.isArray(product.images) && product.images.length > 0;
               const imageSrc = hasImage
-                ? `http://localhost:5000${product.images![0]}`
+                ? `${process.env.NEXT_PUBLIC_API_URL}${product.images![0]}`
                 : null;
 
               const unitPrice =

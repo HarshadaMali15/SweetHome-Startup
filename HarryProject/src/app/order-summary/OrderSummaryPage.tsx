@@ -38,7 +38,7 @@ const router = useRouter();
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/orders/user", {
+        const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/orders/user", {
           credentials: "include",
         });
         const data = await res.json();
@@ -98,7 +98,7 @@ const router = useRouter();
           >
             <div className="relative h-20 w-20">
               <Image
-                src={`http://localhost:5000${item.product.images[0]}`}
+                src={`${process.env.NEXT_PUBLIC_API_URL}${item.product.images[0]}`}
                 alt={item.product.name}
                 fill
                 className="object-cover rounded"

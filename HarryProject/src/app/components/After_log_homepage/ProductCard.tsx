@@ -41,7 +41,7 @@ export default function ProductCard({
         <Image
           src={
             images[0]
-              ? `http://localhost:5000${normalizeImagePath(images[0])}`
+              ? `${process.env.NEXT_PUBLIC_API_URL}${normalizeImagePath(images[0])}`
               : "/placeholder.svg"
           }
           alt={name}

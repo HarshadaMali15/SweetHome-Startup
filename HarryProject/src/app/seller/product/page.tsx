@@ -30,7 +30,7 @@ export default function ProductManagement() {
   }
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/products/mine", {
+      const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/products/mine", {
         credentials: "include", // Send cookies with the request
       });
       if (!res.ok) throw new Error(`Failed to fetch products: ${res.status}`);
@@ -44,7 +44,7 @@ export default function ProductManagement() {
 
   const deleteProduct = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/products/mine/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/mine/${id}`, {
         method: "DELETE",
         credentials: "include",
       });

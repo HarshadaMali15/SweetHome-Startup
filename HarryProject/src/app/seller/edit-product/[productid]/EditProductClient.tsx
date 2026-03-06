@@ -42,7 +42,7 @@ export default function EditProductClient({ productid }: EditProductClientProps)
 
     async function fetchProduct() {
       try {
-        const response = await fetch(`http://localhost:5000/api/products/${productid}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${productid}`, {
           method: "GET",
           credentials: "include",
         });
@@ -85,7 +85,7 @@ export default function EditProductClient({ productid }: EditProductClientProps)
     product.images.forEach((file) => formData.append("images", file));
 
     try {
-      const response = await fetch(`http://localhost:5000/api/products/update/${productid}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/update/${productid}`, {
         method: "PUT",
         body: formData,
         credentials: "include",

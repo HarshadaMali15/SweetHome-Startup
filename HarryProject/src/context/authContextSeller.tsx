@@ -19,7 +19,7 @@ export function SellerAuthProvider({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/seller/check-auth", {
+        const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/seller/check-auth", {
           credentials: "include", // Ensure cookies are sent
         });
 
@@ -38,7 +38,7 @@ export function SellerAuthProvider({ children }: { children: React.ReactNode }) 
   }, []);
 
   const logoutSeller = async () => {
-    await fetch("http://localhost:5000/api/seller/logout", {
+    await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/seller/logout", {
       method: "POST",
       credentials: "include",
     });
