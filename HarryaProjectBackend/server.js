@@ -29,9 +29,7 @@ app.use(cors({
     "http://localhost:3000",
     "https://gentle-gecko-4995b3.netlify.app"
   ],
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  credentials: true
 }));
 
 app.use(
