@@ -7,15 +7,18 @@ import Navbar from "../../components/sell-your-product/Navbar"
 
 export default function CategoryDetailsClient({ id }: { id: string }) {
   const router = useRouter()
+  console.log("Route ID:", id)
   const decodedId = decodeURIComponent(id || "")
 
-  const category = categories.find(
-    (cat) => cat.id === decodedId
-  )
+ const cleanId = decodedId.trim().toLowerCase()
 
-  const subcategoryKey = Object.keys(subcategories).find(
-    (key) => key === decodedId
-  )
+const category = categories.find(
+  (cat) => cat.id.trim().toLowerCase() === cleanId
+)
+
+const subcategoryKey = Object.keys(subcategories).find(
+  (key) => key.trim().toLowerCase() === cleanId
+)
 
   const subcategoryList = subcategoryKey
     ? subcategories[subcategoryKey as keyof typeof subcategories]
