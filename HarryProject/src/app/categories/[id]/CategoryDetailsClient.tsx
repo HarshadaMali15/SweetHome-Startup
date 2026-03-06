@@ -9,13 +9,13 @@ export default function CategoryDetailsClient({ id }: { id: string }) {
   const router = useRouter()
   const decodedId = decodeURIComponent(id || "")
 
-const category = categories.find(
-  (cat) => cat.id.toLowerCase() === decodedId.toLowerCase()
-)
+  const category = categories.find(
+    (cat) => cat.id === decodedId
+  )
 
-const subcategoryKey = Object.keys(subcategories).find(
-  (key) => key.toLowerCase() === decodedId.toLowerCase()
-)
+  const subcategoryKey = Object.keys(subcategories).find(
+    (key) => key === decodedId
+  )
 
 const subcategoryList = subcategoryKey
   ? subcategories[subcategoryKey as keyof typeof subcategories]
