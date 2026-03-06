@@ -23,7 +23,7 @@ connectDB()
   .catch(err => console.error("❌ DB error", err.message))
 
 const app = express()
-
+app.set("trust proxy", 1);
 app.use(cors({
   origin: [
     "http://localhost:3000",
@@ -41,7 +41,10 @@ app.use(cookieParser())
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 1000,
+  max: 2000,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => req.path.startsWith("/api/auth")
 })
 
 app.use("/api/products", limiter)
