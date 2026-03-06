@@ -7,6 +7,8 @@ export function generateStaticParams() {
   }));
 }
 
-export default function Page({ params }: any) {
-  return <CategoryDetailsClient id={params.id} />;
+export default function Page({ params }: { params: { id: string } }) {
+  const id = params?.id ?? "";
+
+  return <CategoryDetailsClient id={id} />;
 }
