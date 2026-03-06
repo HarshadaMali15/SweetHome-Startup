@@ -41,10 +41,12 @@ app.use(cookieParser())
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: process.env.NODE_ENV === "production" ? 100 : 1000
+  max: 1000,
 })
 
-app.use(limiter)
+app.use("/api/products", limiter)
+app.use("/api/cart", limiter)
+app.use("/api/orders", limiter)
 
 // Routes
 app.use("/api/auth", authRoutes)
