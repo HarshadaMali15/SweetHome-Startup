@@ -7,7 +7,7 @@ export const protect = async (req, res, next) => {
     if (!token) return res.status(401).json({ message: "Not authorized, no token" });
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.seller = await Seller.findById(decoded.id).select("-password");
+    req.seller = await Seller.findById(decoded.userId).select("-password");
 
     next();
   } catch (error) {
