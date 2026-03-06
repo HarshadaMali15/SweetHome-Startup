@@ -25,7 +25,7 @@ connectDB()
 const app = express()
 
 app.use(cors({
-  origin: ["http://localhost:3000","https://sweethome-psi.vercel.app"],
+  origin: ["http://localhost:3000","https://gentle-gecko-4995b3.netlify.app"],
   credentials: true
 }))
 
