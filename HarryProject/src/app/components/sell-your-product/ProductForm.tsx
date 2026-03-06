@@ -5,9 +5,8 @@ import { categories, subcategories } from "./categories";
 import { useRouter } from "next/navigation";
 
 export default function ProductForm() {
-  // Remove temporary sellerId since backend will derive it from the auth token
-  // const sellerId = "SELLER_ID_FROM_AUTH";
   const router = useRouter();
+
   const [product, setProduct] = useState({
     name: "",
     description: "",
@@ -23,26 +22,26 @@ export default function ProductForm() {
     sellerName: "Auto-filled",
     contact: "",
     location: "",
-    images: [] as File[], // Now stores an array of files
+    images: [] as File[],
   });
 
-  // Handle text, select, and textarea inputs
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
-  const handleBack = () => {
-    router.push("/categories") // Back to the main categories page
-  }
 
-  // Handle file input change
+  const handleBack = () => {
+    router.push("/categories");
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
+
     if (files && files.length > 0) {
       setProduct((prev) => ({
         ...prev,
-        [name]: Array.from(files), // Convert FileList to an array
+        [name]: Array.from(files),
       }));
     }
   };
@@ -52,44 +51,35 @@ export default function ProductForm() {
 
     const formData = new FormData();
 
-    // Append all non-image fields
     Object.keys(product).forEach((key) => {
       if (key !== "images" && product[key as keyof typeof product]) {
         formData.append(key, product[key as keyof typeof product] as string);
       }
     });
 
-    // Do not append sellerId from the client. The backend should extract it from the auth token.
-    // formData.append("sellerId", sellerId);
-
-    // Append each image file
     product.images.forEach((file) => {
       formData.append("images", file);
     });
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/add`, {
-        method: "POST",
-        body: formData,
-        credentials: "include", // Ensure cookies (auth token) are sent
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/products/add`,
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        }
+      );
 
-      let data;
+      const data = await response.json();
 
-try {
-  data = await response.json();
-} catch {
-  const text = await response.text();
-  console.error("Server returned:", text);
-  throw new Error("Server returned invalid JSON");
-}
       console.log("Response:", data);
 
       if (response.ok) {
         alert("Product added successfully!");
-        router.push("/seller/product"); // ✅ redirect to another page
+        router.push("/seller/product");
       } else {
-        alert(`Error: ${data.message}`);
+        alert(data.message || "Error adding product");
       }
     } catch (error) {
       console.error("Error submitting product:", error);
@@ -100,25 +90,27 @@ try {
   return (
     <div>
       <Navbar />
+
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-100 to-white pt-16 pb-16">
-         {/* Back to Category Button */}
-         <div>
-         <div className="absolute pt-16 top-4 left-14">
+
+        {/* Back Button */}
+        <div className="absolute pt-16 top-4 left-14">
           <button
             onClick={handleBack}
-            className="px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-all duration-300"
+            className="px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700"
           >
             ⬅ Back to Categories
           </button>
         </div>
-         </div>
-         
 
         <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+
           <h2 className="text-2xl font-bold text-yellow-800 text-center mb-6">
             Add Your Product
           </h2>
+
           <form onSubmit={handleSubmit} className="space-y-4">
+
             <input
               type="text"
               name="name"
@@ -127,13 +119,15 @@ try {
               className="w-full px-4 py-2 border rounded-lg"
               required
             />
+
             <textarea
               name="description"
               placeholder="Product Description"
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg"
               required
-            ></textarea>
+            />
+
             <input
               type="number"
               name="price"
@@ -142,6 +136,7 @@ try {
               className="w-full px-4 py-2 border rounded-lg"
               required
             />
+
             <input
               type="number"
               name="discountPrice"
@@ -149,6 +144,7 @@ try {
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg"
             />
+
             <input
               type="number"
               name="stock"
@@ -200,14 +196,13 @@ try {
               required
             >
               <option value="">Select Subcategory</option>
-              {product.category &&
 
-              
-subcategories[product.category]?.map((sub) => (
-  <option key={sub.name} value={sub.name}>
-    {sub.name}
-  </option>
-))}
+              {product.category &&
+                subcategories[product.category]?.map((sub) => (
+                  <option key={sub.name} value={sub.name}>
+                    {sub.name}
+                  </option>
+                ))}
             </select>
 
             <select
@@ -238,6 +233,7 @@ subcategories[product.category]?.map((sub) => (
               className="w-full px-4 py-2 border rounded-lg"
               required
             />
+
             <input
               type="text"
               name="location"
@@ -263,8 +259,8 @@ subcategories[product.category]?.map((sub) => (
             >
               Submit Product
             </button>
+
           </form>
-          
         </div>
       </div>
     </div>
