@@ -67,11 +67,13 @@ export const loginSeller = async (req, res) => {
 
     const token = jwt.sign({ id: seller._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
     
-    res.cookie("seller_token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-    });
+res.cookie("seller_token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  path: "/",
+  maxAge: 7 * 24 * 60 * 60 * 1000
+});
 
     res.json({ message: "Login successful", seller: { name: seller.name, email: seller.email } });
   } catch (error) {
@@ -100,10 +102,10 @@ export const checkAuth = async (req, res) => {
 
 export const logoutSeller = (req, res) => {
   res.clearCookie("seller_token", {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "strict",
-});
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
 
   res.json({ message: "Logout successful" });
 };
