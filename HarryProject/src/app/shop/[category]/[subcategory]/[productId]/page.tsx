@@ -1,6 +1,6 @@
 // app/shop/[category]/[subcategory]/[productId]/page.tsx
 "use client";
-
+export const dynamic = "force-dynamic";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
@@ -89,7 +89,7 @@ export default function ProductDetailPage() {
   // Add to Cart API call
   const handleAddToCart = async () => {
     try {
-      const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/cart/add", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/cart/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // send cookies

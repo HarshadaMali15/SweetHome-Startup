@@ -42,7 +42,7 @@ export default function SellerOrdersPage() {
 
   const fetchSellerOrders = async () => {
     try {
-      const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/seller/seller", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/seller/seller`, {
         method: "GET",
         credentials: "include",
       });

@@ -28,7 +28,7 @@ export default function SellerFeedbacksPage() {
   useEffect(() => {
     const fetchFeedbacks = async () => {
       try {
-        const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/feedback/seller", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/feedback/seller`, {
           credentials: "include",
         });
 

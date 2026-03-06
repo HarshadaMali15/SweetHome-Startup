@@ -22,7 +22,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/user/profile", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/profile`, {
           method: "GET",
           credentials: "include", // To send cookies
           headers: {

@@ -68,7 +68,7 @@ export default function ProductForm() {
     });
 
     try {
-      const response = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/products/add", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/add`, {
         method: "POST",
         body: formData,
         credentials: "include", // Ensure cookies (auth token) are sent

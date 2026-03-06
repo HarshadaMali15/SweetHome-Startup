@@ -38,7 +38,7 @@ const router = useRouter();
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/orders/user", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/user`, {
           credentials: "include",
         });
         const data = await res.json();
