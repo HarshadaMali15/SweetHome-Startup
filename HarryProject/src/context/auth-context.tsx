@@ -46,10 +46,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     checkAuth();
   }, []);
 
-  const login = (userData: User) => {
-    setUser(userData);
-    router.push('/shop');
-  };
+ const login = (userData: User) => {
+  setUser(userData);
+  router.replace('/shop');
+};
 
   const logout = async () => {
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {

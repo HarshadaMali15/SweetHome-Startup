@@ -29,13 +29,12 @@ export const loginUser = async (req, res) => {
     }
 
     // Set HTTP-only cookie
-    res.cookie('token', generateToken(user._id), {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-    });
-
+    res.cookie("token", generateToken(user._id), {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    maxAge: 7 * 24 * 60 * 60 * 1000
+  });
     res.json({
       message: "Login successful",
       user: {
@@ -67,7 +66,11 @@ export const authMiddleware = async (req, res, next) => {
 
 // Add logout endpoint
 export const logoutUser = (req, res) => {
-  res.clearCookie('token');
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
   res.json({ message: "Logout successful" });
 };
 
