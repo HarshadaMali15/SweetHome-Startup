@@ -152,7 +152,7 @@ export const deleteProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { productId } = req.params;
-    const sellerId = req.seller._id; // Get seller ID from authentication middleware
+    const sellerId = req.seller._id;
 
     let product = await Product.findOne({ _id: productId, sellerId });
 
@@ -160,13 +160,22 @@ export const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found or unauthorized" });
     }
 
-    // Extract updated fields from request body
     const {
-      name, description, price, discountPrice, stock, unit, deliveryTime,
-      category, subcategory, returnPolicy, paymentMode, contact, location
+      name,
+      description,
+      price,
+      discountPrice,
+      stock,
+      unit,
+      deliveryTime,
+      category,
+      subcategory,
+      returnPolicy,
+      paymentMode,
+      contact,
+      location,
     } = req.body;
 
-    // Update product fields if they are provided
     product.name = name || product.name;
     product.description = description || product.description;
     product.price = price || product.price;
@@ -181,20 +190,22 @@ export const updateProduct = async (req, res) => {
     product.contact = contact || product.contact;
     product.location = location || product.location;
 
-    // If new images are uploaded, update the image paths
     if (req.files && req.files.length > 0) {
-      product.images = req.files.map((file) => `/uploads/${file.filename}`);
+      product.images = req.files.map((file) => file.path);
     }
 
     await product.save();
-    res.json({ message: "Product updated successfully!", product });
 
+    res.json({
+      message: "Product updated successfully!",
+      product,
+    });
   } catch (error) {
-    console.error("Add Product Error:", error);
+    console.error("Update Product Error:", error);
 
-res.status(500).json({
-  message: "Server error",
-  error: error.message
-});
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
