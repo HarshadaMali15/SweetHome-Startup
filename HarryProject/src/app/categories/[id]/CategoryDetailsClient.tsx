@@ -17,9 +17,9 @@ export default function CategoryDetailsClient({ id }: { id: string }) {
     (key) => key === decodedId
   )
 
-const subcategoryList = subcategoryKey
-  ? subcategories[subcategoryKey as keyof typeof subcategories]
-  : []
+  const subcategoryList = subcategoryKey
+    ? subcategories[subcategoryKey as keyof typeof subcategories]
+    : []
 
   if (!category) {
     return <div className="text-center text-red-600">Category not found</div>
