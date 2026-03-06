@@ -4,12 +4,17 @@ import cloudinary from "../config/cloudinary.js";
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: {
-    folder: "sweethome-products",
-    allowed_formats: ["jpg", "png", "jpeg"],
+  params: async (req, file) => {
+    return {
+      folder: "sweethome-products",
+      format: "jpg",
+      public_id: Date.now() + "-" + file.originalname,
+    };
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({
+  storage: storage,
+});
 
 export default upload;
