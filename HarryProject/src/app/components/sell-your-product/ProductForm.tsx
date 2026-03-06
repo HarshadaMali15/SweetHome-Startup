@@ -74,7 +74,15 @@ export default function ProductForm() {
         credentials: "include", // Ensure cookies (auth token) are sent
       });
 
-      const data = await response.json();
+      let data;
+
+try {
+  data = await response.json();
+} catch {
+  const text = await response.text();
+  console.error("Server returned:", text);
+  throw new Error("Server returned invalid JSON");
+}
       console.log("Response:", data);
 
       if (response.ok) {

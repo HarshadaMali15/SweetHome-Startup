@@ -19,9 +19,7 @@ export const addProduct = async (req, res) => {
     }
 
     // Ensure images are correctly saved as URLs under /uploads
-   const images = (req.files || []).map((file) => {
-  return `/uploads/${file.filename}`;
-});
+   const images = (req.files || []).map((file) => file.path);
 
     // Get seller id from authenticated request (ensure middleware sets req.seller)
     const sellerId = req.seller ? req.seller._id : null;
@@ -192,6 +190,11 @@ export const updateProduct = async (req, res) => {
     res.json({ message: "Product updated successfully!", product });
 
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    console.error("Add Product Error:", error);
+
+res.status(500).json({
+  message: "Server error",
+  error: error.message
+});
   }
 };
