@@ -34,7 +34,11 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-app.use(helmet())
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  })
+)
 app.use(morgan("dev"))
 app.use(express.json())
 app.use(cookieParser())
