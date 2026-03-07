@@ -107,7 +107,7 @@ export default function CartPage() {
                   {imagePath && (
                     <div className="relative h-20 w-20">
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_API_URL}${imagePath}`}
+                        src={imagePath || "/placeholder.svg"}
                         alt={item.product.name}
                         fill
                         className="object-cover rounded"
