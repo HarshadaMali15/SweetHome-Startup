@@ -24,11 +24,7 @@ export default function ProductCard({
 }: ProductCardProps) {
   const discountPercentage = discountPrice ? Math.round((( price - discountPrice ) / price) * 100) : 0;
 
-  const normalizeImagePath = (imgPath: string | undefined) => {
-    if (!imgPath) return "";
-    // Remove duplicate leading slashes so //tmp/... becomes /tmp/...
-    return imgPath.replace(/^\/+/, "/");
-  };
+ 
 
   return (
 
@@ -39,15 +35,11 @@ export default function ProductCard({
       {/* Product Image */}
       <div className="relative h-48  group">
         <Image
-          src={
-            images[0]
-              ? `${process.env.NEXT_PUBLIC_API_URL}${normalizeImagePath(images[0])}`
-              : "/placeholder.svg"
-          }
+          src={images?.[0] || "/placeholder.svg"}
           alt={name}
-          layout="fill"
-          objectFit="cover"
-          className=" transition-opacity group-hover:opacity-80"
+          fill
+          className="object-cover"
+          
         />
       </div>
 
