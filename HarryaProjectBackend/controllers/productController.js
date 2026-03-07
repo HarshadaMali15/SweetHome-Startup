@@ -19,7 +19,7 @@ export const addProduct = async (req, res) => {
     }
 
     // Ensure images are correctly saved as URLs under /uploads
-   const images = (req.files || []).map((file) => file.path);
+   const images = req.files ? req.files.map(file => file.path || file.secure_url) : [];
 
     // Get seller id from authenticated request (ensure middleware sets req.seller)
     const sellerId = req.seller ? req.seller._id : null;
