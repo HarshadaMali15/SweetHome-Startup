@@ -1,3 +1,4 @@
+// app/shop/[category]/[subcategory]/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";

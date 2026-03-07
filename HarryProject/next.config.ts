@@ -17,6 +17,11 @@ const nextConfig: NextConfig = {
         hostname: "sweethome-backend-70n7.onrender.com",
         pathname: "/**",
       },
+       {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/**",
+      }
     ],
   },
 };
