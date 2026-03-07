@@ -122,6 +122,11 @@ export default function AdminLogin() {
                 <LogIn size={20} />
                 {loading ? 'Logging in...' : 'Login'}
               </button>
+              {/* Demo user credentials */}
+              <p className="text-center text-xs text-gray-500 mt-2">
+                Demo Admin: <span className="font-semibold">amali2003@gmail.com</span> /{" "}
+                <span className="font-semibold">admin123</span>
+              </p>
             </motion.div>
           </div>
         </form>
